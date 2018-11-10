@@ -7,7 +7,8 @@ router.get("/", function (req, res, next) {
         "CS.name AS csName, " +
         "ET.name AS eventName, " +
         "CSP.name AS productName, " +
-        "CSP.price AS price " +
+        "CSP.price AS price, " +
+        "CSP.image AS image " +
         "FROM cs_product AS CSP " +
         "INNER JOIN cs_type AS CS " +
         "ON CSP.cs_type = CS.id " +
