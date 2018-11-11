@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
 
-router.get("/", function (req, res, next) {
-    var param = req.query;
+router.post("/", function (req, res, next) {
+    var param = req.body;
     var query = "SELECT " +
         "CS.name AS csName, " +
         "ET.name AS eventName, " +
@@ -14,7 +14,8 @@ router.get("/", function (req, res, next) {
         "ON CSP.cs_type = CS.id " +
         "INNER JOIN event_type AS ET " +
         "ON CSP.event_type = ET.id " +
-        "WHERE CSP.cs_type = ${csType} AND CSP.event_type = ${eventType}";
+        "WHERE CSP.cs_type = ${csType} AND CSP.event_type = ${eventType}" +
+        "LIMIT ${startIdx}, ${count}";
 
     if (typeof param.csType === "undefined")
         query = query.replace("CSP.cs_type = ${csType}", "1=1");
@@ -25,6 +26,9 @@ router.get("/", function (req, res, next) {
         query = query.replace("CSP.event_type = ${eventType}", "1=1");
     else
         query = query.replace("${eventType}", param.eventType);
+
+    query = query.replace("${startIdx}", param.startIdx);
+    query = query.replace("${count}", param.count);
 
     req.sql(query, function (err, rows) {
         if (err) {
