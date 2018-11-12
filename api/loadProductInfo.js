@@ -14,7 +14,7 @@ router.post("/", function (req, res, next) {
         "ON CSP.cs_type = CS.id " +
         "INNER JOIN event_type AS ET " +
         "ON CSP.event_type = ET.id " +
-        "WHERE CSP.cs_type = ${csType} AND CSP.event_type = ${eventType}" +
+        "WHERE CSP.cs_type = ${csType} AND CSP.event_type = ${eventType} " +
         "LIMIT ${startIdx}, ${count}";
 
     if (typeof param.csType === "undefined")
