@@ -14,7 +14,7 @@ router.post("/", function (req, res, next) {
         "ON CSP.cs_type = CS.id " +
         "INNER JOIN event_type AS ET " +
         "ON CSP.event_type = ET.id " +
-        "WHERE CSP.cs_type = ${csType} AND CSP.event_type = ${eventType} " +
+        "WHERE CSP.cs_type = ${csType} AND CSP.event_type = ${eventType} ${searchQuery} " +
         "LIMIT ${startIdx}, ${count}";
 
     if (typeof param.csType === "undefined")
@@ -26,6 +26,11 @@ router.post("/", function (req, res, next) {
         query = query.replace("CSP.event_type = ${eventType}", "1=1");
     else
         query = query.replace("${eventType}", param.eventType);
+
+    if (typeof param.searchTxt === "undefined")
+        query = query.replace("${searchQuery}", "");
+    else
+        query = query.replace("${searchQuery}", "AND CSP.name LIKE '%" + param.searchTxt + "%' ");
 
     query = query.replace("${startIdx}", param.startIdx);
     query = query.replace("${count}", param.count);
